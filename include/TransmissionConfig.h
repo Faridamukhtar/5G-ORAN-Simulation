@@ -2,8 +2,10 @@
 #include <string>
 #include <unordered_map>
 
+#include "ConfigProperties.h"
 #include "EthernetPacket.h"
-#include"fileToObjectMapper.h"
+
+extern std::unordered_map<ConfigProperties, std::string> objectPropertyToFilePropertyMapper;
 
 using namespace std;
 

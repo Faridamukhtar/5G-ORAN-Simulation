@@ -1,4 +1,3 @@
-#pragma once
 #include <string>
 #include <iostream>
 #include <unordered_map>
@@ -32,8 +31,8 @@ void FileHandler::ReadFile(TransmissionConfig *TransmissionConfig)
     while (getline(file, line))
     {
         ParseLine(line, data);
-        TransmissionConfig->initializeConfigData(data);
     }
+    TransmissionConfig->initializeConfigData(data);
 }
 
 void FileHandler::ParseLine(string line, unordered_map<string, string> &data)

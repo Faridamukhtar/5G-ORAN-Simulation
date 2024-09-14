@@ -1,10 +1,21 @@
-#pragma once
 #include <unordered_map>
 #include <iostream>
 
 #include "TransmissionConfig.h"
 
 using namespace std;
+
+unordered_map<ConfigProperties, string> objectPropertyToFilePropertyMapper =
+{
+    {LINE_RATE, "Eth.LineRate"},
+    {CAPTURE_SIZE, "Eth.CaptureSizeMs"},
+    {MIN_IFGS, "Eth.MinNumOfIFGsPerPacket"},
+    {DEST_ADDRESS, "Eth.DestAddress"},
+    {SRC_ADDRESS, "Eth.SourceAddress"},
+    {MAX_PACKET_SIZE, "Eth.MaxPacketSize"},
+    {BURST_SIZE, "Eth.BurstSize"},
+    {BURST_PERIODICITY, "Eth.BurstPeriodicity_us"},
+};
 
 TransmissionConfigBurst::TransmissionConfigBurst() {}
 
