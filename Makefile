@@ -1,10 +1,11 @@
-#Input/Output Filenames
+# Input/Output Filenames
 INPUT_FILE = "config.txt"
 OUTPUT_FILE = "output.txt"
 
 # Compiler and flags
 CXX = g++
 CXXFLAGS = -Wall -std=c++17 -I$(INC_DIR)
+LDFLAGS = -lz  # Link with the zlib library
 
 # Directories
 SRC_DIR = src
@@ -24,7 +25,7 @@ all: $(TARGET)
 
 # Linking rule
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) $^ -o $@
+	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
 # Object file rules
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -42,4 +43,4 @@ clean:
 # Include dependency files
 -include $(DEPS)
 
-.PHONY: all clean
+.PHONY: all clean run

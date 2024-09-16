@@ -3,7 +3,9 @@
 #include <unordered_map>
 
 #include "ConfigProperties.h"
-#include "EthernetPacket.h"
+
+class TransmissionHandler;
+class TransmissionHandlerBurst;
 
 extern std::unordered_map<ConfigProperties, std::string> objectPropertyToFilePropertyMapper;
 
@@ -11,6 +13,8 @@ using namespace std;
 
 class TransmissionConfig
 {
+    friend class TransmissionHandler;
+
 protected:
     double lineRateInGigaBits;
     double captureSizeInMs;
@@ -25,8 +29,11 @@ public:
 
 class TransmissionConfigBurst : public TransmissionConfig
 {
+    friend class TransmissionHandlerBurst;
     int burstSize;
     double burstPeriodicityInMicroseconds;
+    
+    string remove0xFromAddress(string address);
 
 public:
     TransmissionConfigBurst();

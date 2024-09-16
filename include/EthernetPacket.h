@@ -3,10 +3,6 @@
 #include "Payload.h"
 
 using namespace std;
-
-class EthernetCRC
-{
-};
 class EthernetPacket
 {
     const string preamble;
@@ -14,16 +10,12 @@ class EthernetPacket
     const string destAddress;
     const string srcAddress;
     const string etherType;
-    Payload* payload;
-    EthernetCRC crc;
-public:
-    EthernetPacket(int maxPacketSize, string destAddress, string srcAddress, string etherType, string preamble, string SFD);
-};
+    Payload *payload;
+    string crc;
 
-class EthernetPacketWrapper
-{
-    EthernetPacket ethernetPacket;
-    int IFGsNum;
 public:
-    EthernetPacketWrapper(int minNoOfIFGs, int maxPacketSize, string destAddress, string srcAddress, string etherType, string preamble, string SFD);
+    EthernetPacket(int maxPacketSize, string destAddress, string srcAddress, string etherType = "0800", string preamble = "FB555555555555", string SFD = "D5");
+    void printProperties();
+    void calculateCRC();
+    string getPacketAsString();
 };

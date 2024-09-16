@@ -1,4 +1,3 @@
-#include <string>
 #include <iostream>
 #include <unordered_map>
 
@@ -23,6 +22,11 @@ FileHandler::FileHandler(string fileName, FILE_OPERATION operation)
     }
 }
 
+FileHandler::~FileHandler()
+{
+    closeFile();
+}
+
 void FileHandler::ReadFile(TransmissionConfig *TransmissionConfig)
 {
     string line;
@@ -33,6 +37,19 @@ void FileHandler::ReadFile(TransmissionConfig *TransmissionConfig)
         ParseLine(line, data);
     }
     TransmissionConfig->initializeConfigData(data);
+}
+
+void FileHandler::writeFile(string data, int chunkSize)
+{
+    //prints each 4 bytes in 1 line
+    for (size_t i = 0; i < data.length(); i += chunkSize) {
+        file << data.substr(i, chunkSize) << endl;
+    }
+}
+
+void FileHandler::closeFile()
+{
+    file.close();
 }
 
 void FileHandler::ParseLine(string line, unordered_map<string, string> &data)
