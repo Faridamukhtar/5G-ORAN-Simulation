@@ -37,7 +37,7 @@ void TransmissionHandlerBurst::CalculateTransmissionParameters()
 
 void TransmissionHandlerBurst::calculateSingleByteDurationInMicroseconds()
 {
-    double lineRateInBytes = (pow(10,6) * (transmissionConfigBurst->lineRateInGigaBits))/8;
+    double lineRateInBytes = (pow(10,9) * (transmissionConfigBurst->lineRateInGigaBits))/8;
     singleByteDurationInMicroseconds = (1 / (lineRateInBytes)) * pow(10, 6);
 }
 
