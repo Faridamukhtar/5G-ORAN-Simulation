@@ -14,9 +14,3 @@ enum ConfigProperties
     PAYLOAD_TYPE,
     PAYLOAD_FILENAME,
 };
-
-enum PayloadType 
-{
-    FIXED_PAYLOAD,
-    RANDOM_PAYLOAD,
-};

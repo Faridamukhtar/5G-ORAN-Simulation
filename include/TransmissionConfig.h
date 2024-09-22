@@ -48,7 +48,6 @@ class TransmissionConfigOran : public TransmissionConfig
     int scs;
     int maxNrb;
     int nrbPerPacket;
-    PayloadType payloadType;
     string payloadFilename;
     
 public:

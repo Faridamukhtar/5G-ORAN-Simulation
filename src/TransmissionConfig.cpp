@@ -18,23 +18,8 @@ unordered_map<ConfigProperties, string> objectPropertyToFilePropertyMapper =
         {SCS_VAL, "Oran.SCS"},
         {MAX_NRB, "Oran.MaxNrb"},
         {NRB_PER_PACKET, "Oran.NrbPerPacket"},
-        {PAYLOAD_TYPE, "Oran.PayloadType"},
         {PAYLOAD_FILENAME, "Oran.Payload"},
     };
-
-bool strCmpNoCase(string& str1, string& str2)
-{
-    if (str1.length() != str2.length())
-        return false;
-
-    for (int i = 0; i < str1.length(); ++i)
-    {
-        if (tolower(str1[i]) != tolower(str2[i]))
-            return false;
-    }
-
-    return true;
-}
 
 void TransmissionConfig::initializeConfigData(unordered_map<string, string> configData)
 {
@@ -104,10 +89,6 @@ void TransmissionConfigOran::initializeConfigData(unordered_map<string, string> 
 
     nrbPerPacket = stoi(configData[objectPropertyToFilePropertyMapper[NRB_PER_PACKET]]);
 
-    string payloadTypeAsString = configData[objectPropertyToFilePropertyMapper[PAYLOAD_TYPE]];
-    string fixedPayload = "fixed";
-    payloadType = strCmpNoCase(payloadTypeAsString, fixedPayload) ? FIXED_PAYLOAD : RANDOM_PAYLOAD;
-
     payloadFilename = configData[objectPropertyToFilePropertyMapper[PAYLOAD_FILENAME]];
 }
 
@@ -116,12 +97,8 @@ void TransmissionConfigOran::printProperties()
     TransmissionConfig::printProperties();
 
     cout << "SCS: " << scs << endl;
-
     cout << "Max NRB: " << maxNrb << endl;
-
     cout << "NRB per Packet: " << nrbPerPacket << endl;
-
-    cout << "Payload Type: " << ((static_cast<int>(payloadType)) == 0 ? "Fixed" : "Random") << endl;
-    
     cout << "Payload Filename: " << payloadFilename << endl;
+    cout << endl;
 }
