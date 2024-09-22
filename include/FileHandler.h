@@ -26,6 +26,7 @@ public:
     FileHandler(string fileName, FILE_OPERATION operation);
     ~FileHandler();
     void ReadFile(TransmissionConfig *transmissionConfig);
+    void ReadIQFile(vector<pair<int, int>> &IQSamples, int nLines);
     void writeFile(string data, int chunkSize = 8);
     void closeFile();
 };

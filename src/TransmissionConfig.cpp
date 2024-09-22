@@ -86,8 +86,12 @@ void TransmissionConfigOran::initializeConfigData(unordered_map<string, string> 
     scs = stoi(configData[objectPropertyToFilePropertyMapper[SCS_VAL]]);
 
     maxNrb = stoi(configData[objectPropertyToFilePropertyMapper[MAX_NRB]]);
+    if (maxNrb == 0)
+        maxNrb = 273;
 
     nrbPerPacket = stoi(configData[objectPropertyToFilePropertyMapper[NRB_PER_PACKET]]);
+    if (nrbPerPacket == 0)
+        nrbPerPacket = 273;
 
     payloadFilename = configData[objectPropertyToFilePropertyMapper[PAYLOAD_FILENAME]];
 }

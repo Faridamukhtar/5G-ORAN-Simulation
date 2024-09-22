@@ -28,11 +28,11 @@ int main(int argc, char *argv[])
 
         transmissionConfigOran->printProperties();
 
-        // FileHandler *fileHandlerWrite = new FileHandler(OutputfileName, WRITE_FILE);
-        // TransmissionHandlerOran *transmissionHandlerOran = new TransmissionHandlerOran(TransmissionConfigOran);
-        // transmissionHandlerOran->printTransmissionParams();
-        // transmissionHandlerOran->transmitPackets(fileHandlerWrite);
-        // fileHandlerWrite->closeFile();
+        FileHandler *fileHandlerWrite = new FileHandler(OutputfileName, WRITE_FILE);
+        TransmissionHandlerOran *transmissionHandlerOran = new TransmissionHandlerOran(transmissionConfigOran);
+        transmissionHandlerOran->printTransmissionParams();
+        transmissionHandlerOran->transmitPackets(fileHandlerWrite);
+        fileHandlerWrite->closeFile();
     }
     else
     {
