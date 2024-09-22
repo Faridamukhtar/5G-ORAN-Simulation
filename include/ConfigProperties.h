@@ -8,4 +8,15 @@ enum ConfigProperties
     MAX_PACKET_SIZE,
     BURST_SIZE,
     BURST_PERIODICITY,
+    SCS_VAL,
+    MAX_NRB,
+    NRB_PER_PACKET,
+    PAYLOAD_TYPE,
+    PAYLOAD_FILENAME,
+};
+
+enum PayloadType 
+{
+    FIXED_PAYLOAD,
+    RANDOM_PAYLOAD,
 };

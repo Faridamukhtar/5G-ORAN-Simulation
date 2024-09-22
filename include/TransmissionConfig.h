@@ -6,6 +6,7 @@
 
 class TransmissionHandler;
 class TransmissionHandlerBurst;
+class TransmissionHandlerOran;
 
 extern std::unordered_map<ConfigProperties, std::string> objectPropertyToFilePropertyMapper;
 
@@ -22,9 +23,11 @@ protected:
     string destAddress;
     string srcAddress;
     int maxPacketSizeInBytes;
+    string remove0xFromAddress(string address);
 
 public:
-    virtual void initializeConfigData(unordered_map<string, string> configData) = 0;
+    virtual void initializeConfigData(unordered_map<string, string> configData);
+    virtual void printProperties();
 };
 
 class TransmissionConfigBurst : public TransmissionConfig
@@ -33,10 +36,23 @@ class TransmissionConfigBurst : public TransmissionConfig
     int burstSize;
     double burstPeriodicityInMicroseconds;
     
-    string remove0xFromAddress(string address);
-
 public:
     TransmissionConfigBurst();
+    void initializeConfigData(unordered_map<string, string> configData);
+    void printProperties();
+};
+
+class TransmissionConfigOran : public TransmissionConfig
+{
+    friend class TransmissionHandlerOran;
+    int scs;
+    int maxNrb;
+    int nrbPerPacket;
+    PayloadType payloadType;
+    string payloadFilename;
+    
+public:
+    TransmissionConfigOran();
     void initializeConfigData(unordered_map<string, string> configData);
     void printProperties();
 };

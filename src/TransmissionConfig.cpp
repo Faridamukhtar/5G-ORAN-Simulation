@@ -15,11 +15,28 @@ unordered_map<ConfigProperties, string> objectPropertyToFilePropertyMapper =
         {MAX_PACKET_SIZE, "Eth.MaxPacketSize"},
         {BURST_SIZE, "Eth.BurstSize"},
         {BURST_PERIODICITY, "Eth.BurstPeriodicity_us"},
-};
+        {SCS_VAL, "Oran.SCS"},
+        {MAX_NRB, "Oran.MaxNrb"},
+        {NRB_PER_PACKET, "Oran.NrbPerPacket"},
+        {PAYLOAD_TYPE, "Oran.PayloadType"},
+        {PAYLOAD_FILENAME, "Oran.Payload"},
+    };
 
-TransmissionConfigBurst::TransmissionConfigBurst() {}
+bool strCmpNoCase(string& str1, string& str2)
+{
+    if (str1.length() != str2.length())
+        return false;
 
-void TransmissionConfigBurst::initializeConfigData(unordered_map<string, string> configData)
+    for (int i = 0; i < str1.length(); ++i)
+    {
+        if (tolower(str1[i]) != tolower(str2[i]))
+            return false;
+    }
+
+    return true;
+}
+
+void TransmissionConfig::initializeConfigData(unordered_map<string, string> configData)
 {
     lineRateInGigaBits = stod(configData[objectPropertyToFilePropertyMapper[LINE_RATE]]);
 
@@ -30,22 +47,11 @@ void TransmissionConfigBurst::initializeConfigData(unordered_map<string, string>
     destAddress = remove0xFromAddress(configData[objectPropertyToFilePropertyMapper[DEST_ADDRESS]]);
 
     srcAddress = remove0xFromAddress(configData[objectPropertyToFilePropertyMapper[SRC_ADDRESS]]);
+
     maxPacketSizeInBytes = stoi(configData[objectPropertyToFilePropertyMapper[MAX_PACKET_SIZE]]);
-    burstSize = stoi(configData[objectPropertyToFilePropertyMapper[BURST_SIZE]]);
-    burstPeriodicityInMicroseconds = stod(configData[objectPropertyToFilePropertyMapper[BURST_PERIODICITY]]);
 }
 
-string TransmissionConfigBurst::remove0xFromAddress(string address)
-{
-    auto pos = address.find('x');
-    if (pos != string::npos) {
-        return address.substr(pos + 1);
-    }
-
-    return address;
-}
-
-void TransmissionConfigBurst::printProperties()
+void TransmissionConfig::printProperties()
 {
     cout << "CONFIG DATA:" << endl;
     cout << "Line Rate (GigaBits): " << lineRateInGigaBits << endl;
@@ -54,7 +60,68 @@ void TransmissionConfigBurst::printProperties()
     cout << "Destination Address: " << destAddress << endl;
     cout << "Source Address: " << srcAddress << endl;
     cout << "Maximum Packet Size (Bytes): " << maxPacketSizeInBytes << endl;
+}
+
+string TransmissionConfig::remove0xFromAddress(string address)
+{
+    auto pos = address.find('x');
+    if (pos != string::npos)
+    {
+        return address.substr(pos + 1);
+    }
+
+    return address;
+}
+
+TransmissionConfigBurst::TransmissionConfigBurst() {}
+
+void TransmissionConfigBurst::initializeConfigData(unordered_map<string, string> configData)
+{
+    TransmissionConfig::initializeConfigData(configData);
+
+    burstSize = stoi(configData[objectPropertyToFilePropertyMapper[BURST_SIZE]]);
+    burstPeriodicityInMicroseconds = stod(configData[objectPropertyToFilePropertyMapper[BURST_PERIODICITY]]);
+}
+
+void TransmissionConfigBurst::printProperties()
+{
+    TransmissionConfig::printProperties();
+
     cout << "Burst Size: " << burstSize << endl;
     cout << "Burst Periodicity (Microseconds): " << burstPeriodicityInMicroseconds << endl;
     cout << endl;
+}
+
+TransmissionConfigOran::TransmissionConfigOran() {}
+
+void TransmissionConfigOran::initializeConfigData(unordered_map<string, string> configData)
+{
+    TransmissionConfig::initializeConfigData(configData);
+
+    scs = stoi(configData[objectPropertyToFilePropertyMapper[SCS_VAL]]);
+
+    maxNrb = stoi(configData[objectPropertyToFilePropertyMapper[MAX_NRB]]);
+
+    nrbPerPacket = stoi(configData[objectPropertyToFilePropertyMapper[NRB_PER_PACKET]]);
+
+    string payloadTypeAsString = configData[objectPropertyToFilePropertyMapper[PAYLOAD_TYPE]];
+    string fixedPayload = "fixed";
+    payloadType = strCmpNoCase(payloadTypeAsString, fixedPayload) ? FIXED_PAYLOAD : RANDOM_PAYLOAD;
+
+    payloadFilename = configData[objectPropertyToFilePropertyMapper[PAYLOAD_FILENAME]];
+}
+
+void TransmissionConfigOran::printProperties()
+{
+    TransmissionConfig::printProperties();
+
+    cout << "SCS: " << scs << endl;
+
+    cout << "Max NRB: " << maxNrb << endl;
+
+    cout << "NRB per Packet: " << nrbPerPacket << endl;
+
+    cout << "Payload Type: " << ((static_cast<int>(payloadType)) == 0 ? "Fixed" : "Random") << endl;
+    
+    cout << "Payload Filename: " << payloadFilename << endl;
 }
