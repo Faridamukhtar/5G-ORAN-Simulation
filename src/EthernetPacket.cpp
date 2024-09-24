@@ -1,5 +1,4 @@
 #include <math.h>
-#include <iostream>
 #include <zlib.h>
 #include <sstream>
 #include <iomanip>
@@ -9,13 +8,9 @@
 
 using namespace std;
 
-EthernetPacket::EthernetPacket(int maxPacketSize, string destAddress, string srcAddress,string etherType, string preamble, string SFD) : preamble(preamble), SFD(SFD), destAddress(destAddress), srcAddress(srcAddress), etherType(etherType)
-{
-    payload = new Payload(maxPacketSize);
-    calculateCRC();
-}
+EthernetPacketTemplate::EthernetPacketTemplate(string destAddress, string srcAddress, string etherType, string preamble, string SFD) : preamble(preamble), SFD(SFD), destAddress(destAddress), srcAddress(srcAddress), etherType(etherType) {}
 
-void EthernetPacket::printProperties()
+void EthernetPacketTemplate::printProperties()
 {
     cout << "Preamble: " << preamble << endl;
     cout << "SFD: " << SFD << endl;
@@ -23,21 +18,42 @@ void EthernetPacket::printProperties()
     cout << "Source Address: " << srcAddress << endl;
     cout << "EtherType: " << etherType << endl;
     cout << "CRC: " << crc << endl;
-
-    //TODO: PRINT PAYLOAD HERE IF NEEDED
 }
 
-string EthernetPacket::getPacketAsString()
-{
-    return preamble + SFD + destAddress + srcAddress + etherType + payload->getPayload() + crc;
-}
-
-void EthernetPacket::calculateCRC()
+void EthernetPacketTemplate::calculateCRC()
 {
     unsigned long crcInit = crc32(0L, Z_NULL, 0);
-    string packetData = destAddress + srcAddress + payload->getPayload();
-    uLong crcDecimal = crc32(crcInit, reinterpret_cast<const Bytef*>(packetData.c_str()), packetData.size());
+    uLong crcDecimal = crc32(crcInit, reinterpret_cast<const Bytef *>(packetDataWithoutCRC.c_str()), packetDataWithoutCRC.size());
     stringstream stream;
     stream << hex << setw(8) << setfill('0') << crcDecimal;
     crc = stream.str();
+}
+
+string EthernetPacketTemplate::getPacketAsString()
+{
+    return packetDataWithoutCRC + crc;
+}
+
+EthernetPacket::EthernetPacket(int maxPacketSize, string destAddress, string srcAddress, string etherType, string preamble, string SFD) : EthernetPacketTemplate(destAddress, srcAddress, etherType, preamble, SFD)
+{
+    payload = new Payload(maxPacketSize);
+    setPacketDataWithoutCRC();
+    calculateCRC();
+}
+
+void EthernetPacket::setPacketDataWithoutCRC()
+{
+    packetDataWithoutCRC = preamble + SFD + destAddress + srcAddress + etherType + payload->getPayload();
+}
+
+EthernetPacketOran::EthernetPacketOran(int RBs, vector<pair<int, int>> IQSamples, string destAddress, string srcAddress, string etherType, string preamble, string SFD) : EthernetPacketTemplate(destAddress, srcAddress, etherType, preamble, SFD)
+{
+    ecpriPacket = new EcpriPacket(RBs, IQSamples);
+    setPacketDataWithoutCRC();
+    calculateCRC();
+}
+
+void EthernetPacketOran::setPacketDataWithoutCRC()
+{
+    packetDataWithoutCRC = preamble + SFD + destAddress + srcAddress + etherType + ecpriPacket->getEcpriPacketAsString();
 }

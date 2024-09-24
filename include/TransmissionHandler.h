@@ -10,12 +10,11 @@ using namespace std;
 class TransmissionHandler
 {
 public:
-    virtual void CalculateTransmissionParameters()=0;
-    virtual void initializeEthernetPackets()=0;
-    virtual void transmitPackets(FileHandler* fileHandler)=0;
-    virtual void printTransmissionParams()=0;
+    virtual void calculateTransmissionParameters() = 0;
+    virtual void setEthernetPacket() = 0;
+    virtual void transmitPackets(FileHandler *fileHandler) = 0;
+    virtual void printTransmissionParams() = 0;
 };
-
 class TransmissionHandlerBurst : public TransmissionHandler
 {
     TransmissionConfigBurst *transmissionConfigBurst;
@@ -45,8 +44,37 @@ class TransmissionHandlerBurst : public TransmissionHandler
 public:
     TransmissionHandlerBurst(TransmissionConfigBurst *transmissionConfigBurst);
     ~TransmissionHandlerBurst();
-    void CalculateTransmissionParameters();
-    void initializeEthernetPackets();
-    void transmitPackets(FileHandler* fileHandler);
+    void calculateTransmissionParameters();
+    void setEthernetPacket();
+    void transmitPackets(FileHandler *fileHandler);
     void printTransmissionParams();
+};
+class TransmissionHandlerOran : TransmissionHandler
+{
+    TransmissionConfigOran *transmissionConfigOran;
+    EthernetPacketOran *ethernetPacket;
+
+    //Packet Size and Structure Params
+    int noOfPacketsPerSymbol;
+    int noOfFragmentsPerPacket;
+    int noOfIFGsPerFullPacket;
+    int noOfIFGsPerLastPacketInFragment;
+    int noOfIFGsPerLastPacketInSymbol;
+    int maxNRBsPerPacket;
+    int lastFragmentNRBs;
+    int lastPacketPerSymbolNRBs;
+    int noOfFragmentsPerLastPacketInSymbol;
+    int lastFragmentInLastPacketPerSymbolNRBs;
+    long long noOfSymbols;
+
+    void calculateFrameStructureData();
+    void calculateFragmentationRequirements();
+    void calculateIFGsPerPacket();
+
+public:
+    TransmissionHandlerOran(TransmissionConfigOran *transmissionConfigOran);
+    void calculateTransmissionParameters();
+    void transmitPackets(FileHandler *fileHandler);
+    void printTransmissionParams();
+    void setEthernetPacket();
 };
