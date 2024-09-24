@@ -1,5 +1,6 @@
 # Output Filename
 OUTPUT_FILE = "output.txt"
+TRANSMISSION_MODE = "ORAN"
 
 # Compiler and flags
 CXX = g++
@@ -33,7 +34,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 # Run the executable
 run: $(TARGET)
-	./$(TARGET) $(OUTPUT_FILE)
+	./$(TARGET) $(OUTPUT_FILE) $(TRANSMISSION_MODE)
 
 # Clean rule
 clean:
