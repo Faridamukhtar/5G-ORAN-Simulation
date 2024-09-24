@@ -1,0 +1,8 @@
+#CONFIG
+.vscode
+
+#BINARIES
+generator/obj
+receiver/obj
+generator/main
+receiver/main
