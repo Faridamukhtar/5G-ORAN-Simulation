@@ -107,13 +107,14 @@ The configuration file contains key-value pairs used to set up the simulation pa
   - **Example Value**: `iq_file.txt`
 
 ## Configuration File SetUp
-Place the `config.txt` file in the root directory of the simulation project. The simulation program will read this file to configure its parameters accordingly.
+Place the `config.txt` file in the root directory of the `generator` project folder. The simulation program will read this file to configure its parameters accordingly.
 
 ## Running Project
-Compile and Run the project using make:
+Compile and Run the project using make in each of the `generator` and `receiver` directories:
 ```bash
    make run
 ```
+ **IMPORTANT**: YOU HAVE TO RUN RECEIVER BEFORE GENERATOR FOR SUCCESSFUL TRANSMISSION
 
 ## Output
 - For all transmission modes, a 4-byte aligned output stream will be dumped into the `output.txt` file in the root directory of the simulation project.

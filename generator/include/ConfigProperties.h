@@ -1,0 +1,16 @@
+enum ConfigProperties
+{
+    LINE_RATE,
+    CAPTURE_SIZE,
+    MIN_IFGS,
+    DEST_ADDRESS,
+    SRC_ADDRESS,
+    MAX_PACKET_SIZE,
+    BURST_SIZE,
+    BURST_PERIODICITY,
+    SCS_VAL,
+    MAX_NRB,
+    NRB_PER_PACKET,
+    PAYLOAD_TYPE,
+    PAYLOAD_FILENAME,
+};
