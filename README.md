@@ -117,5 +117,5 @@ Compile and Run the project using make in each of the `generator` and `receiver`
  **IMPORTANT**: YOU HAVE TO RUN RECEIVER BEFORE GENERATOR FOR SUCCESSFUL TRANSMISSION
 
 ## Output
-- For all transmission modes, a 4-byte aligned output stream will be dumped into the `output.txt` file in the root directory of the simulation project.
-- For **`ORAN Mode`**, a json file for the parsed packets, `parsedPackets.json`, will be generated in the root directory of the simulation project.
+- For all transmission modes, a 4-byte aligned output stream will be dumped into the `output.txt` file in the root directory of the `receiver` folder.
+- For **`ORAN Mode`**, a json file for the parsed packets, `parsedPackets.json`, will be generated in the root directory of the `receiver` folder.
