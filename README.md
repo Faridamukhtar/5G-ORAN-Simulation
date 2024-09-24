@@ -75,6 +75,8 @@ The configuration file contains key-value pairs used to set up the simulation pa
 - **Eth.MaxPacketSize**: 
   - **Description**: The maximum size of a packet in bytes.
   - **Example Value**: `46`
+    
+**`Burst Mode`**
 
 - **Eth.BurstSize**: 
   - **Description**: The size of the burst in packets.
@@ -83,6 +85,26 @@ The configuration file contains key-value pairs used to set up the simulation pa
 - **Eth.BurstPeriodicity_us**: 
   - **Description**: The periodicity of bursts in microseconds.
   - **Example Value**: `100`
+ 
+  
+
+**`ORAN Mode`**
+
+- **Oran.SCS**: 
+  - **Description**: Subcarrier Spacing.
+  - **Example Value**: `30`
+
+- **Oran.MaxNrb**: 
+  - **Description**: Max Number Of Resource Blocks / Symbol.
+  - **Example Value**: `273`
+ 
+- **Oran.NrbPerPacket**: 
+  - **Description**: Max Number Of Resource Blocks / Packet.
+  - **Example Value**: `30`
+
+- **Oran.Payload**: 
+  - **Description**: name of the file which contains the payload's IQ samples.
+  - **Example Value**: `iq_file.txt`
 
 ## Configuration File SetUp
 Place the `config.txt` file in the root directory of the simulation project. The simulation program will read this file to configure its parameters accordingly.
@@ -94,4 +116,5 @@ Compile and Run the project using make:
 ```
 
 ## Output
-The 4-byte aligned output stream will be dumped into the `output.txt` file in the root directory of the simulation project.
+- For all transmission modes, a 4-byte aligned output stream will be dumped into the `output.txt` file in the root directory of the simulation project.
+- For **`ORAN Mode`**, a json file for the parsed packets, `parsedPackets.json`, will be generated in the root directory of the simulation project.
