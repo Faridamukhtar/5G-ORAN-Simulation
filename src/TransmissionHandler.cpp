@@ -1,7 +1,7 @@
 #include "TransmissionHandler.h"
 
 #define IFG_VAL "07"
-#define TOTAL_ORAN_HEADER_SIZE 50
+#define TOTAL_ORAN_HEADER_SIZE 42
 
 string concatNStrings(string data, int repetitions)
 {
@@ -264,13 +264,12 @@ void TransmissionHandlerOran::transmitPackets(FileHandler *fileHandler)
                     fileHandlerRead->ReadIQFile(IQSamples, maxNRBsPerPacket * 12);
                     ethernetPacket = new EthernetPacketOran(maxNRBsPerPacket, IQSamples, transmissionConfigOran->destAddress, transmissionConfigOran->srcAddress);
                     string packet = ethernetPacket->getPacketAsString() + concatNStrings(IFG_VAL, noOfIFGsPerFullPacket);
-                    fileHandler->writeFile(packet);
                     delete ethernetPacket;
                 }
 
                 fileHandlerRead->ReadIQFile(IQSamples, lastFragmentInLastPacketPerSymbolNRBs * 12);
                 ethernetPacket = new EthernetPacketOran(lastFragmentInLastPacketPerSymbolNRBs, IQSamples, transmissionConfigOran->destAddress, transmissionConfigOran->srcAddress);
-                string packet = ethernetPacket->getPacketAsString() + concatNStrings(IFG_VAL, noOfFragmentsPerLastPacketInSymbol);
+                string packet = ethernetPacket->getPacketAsString() + concatNStrings(IFG_VAL, noOfIFGsPerLastPacketInSymbol);
                 fileHandler->writeFile(packet);
                 delete ethernetPacket;
             }
@@ -301,6 +300,8 @@ void TransmissionHandlerOran::transmitPackets(FileHandler *fileHandler)
             }
         }
     }
+    
+    delete fileHandlerRead;
 }
 
 void TransmissionHandlerOran::printTransmissionParams()

@@ -24,16 +24,6 @@ string signedToHex16Bit(int num)
     return ss.str();
 }
 
-int hex16BitToSigned(string hexNum)
-{
-    int signedNum = stoi(hexNum, nullptr, 16);
-
-    if (signedNum & 0x8000) // checks if negative number by comparing highest bit (2s complement)
-        signedNum -= pow(2, 16);
-
-    return signedNum;
-}
-
 Payload::Payload(int maxPacketSize, int extraBytesNo)
 {
     string dummyData((maxPacketSize - extraBytesNo) * 2, '0');
@@ -48,9 +38,11 @@ string Payload::getPayload()
 OranPacket::OranPacket(int RBs, vector<pair<int, int>> IQSamples)
 {
     incrementPacket();
+    
     string zeroByte(2, '0');
     firstByte = zeroByte;
     this->RBs = RBs;
+    adjustStartRB();
 
     string zeroPoint5Byte(3, '0');
     sectionStartData = zeroPoint5Byte;
@@ -81,6 +73,7 @@ int OranPacket::maxPacketsPerSymbolAfterFragmentation;
 int OranPacket::currentPacketsPerSymbol = -1;
 int OranPacket::noOfFragmentsPerPacket = 1;
 int OranPacket::startRB = 0;
+int OranPacket::prevRBs = 0;
 
 void OranPacket::incrementPacket()
 {
@@ -123,16 +116,17 @@ void OranPacket::setSlotsPerSubFrame(int slotsPerSubFrame)
 
 void OranPacket::adjustStartRB()
 {
-    if (symbolId == 0)
+    if (currentPacketsPerSymbol == 0)
         startRB = 0;
     else
-        startRB += RBs;
+        startRB += prevRBs;
+
+    prevRBs = RBs;
 }
 
 string OranPacket::getOranPacketAsString()
 {
     string packet = firstByte + convertToHex(frameId) + convertToHex(subFrameId, 1) + convertToHex(slotId * pow(2, 2)) + convertToHex(symbolId, 1) + sectionStartData + convertToHex(startRB, 3) + convertToHex(RBs, 2) + payload;
-    adjustStartRB();
     return packet;
 }
 
@@ -150,7 +144,6 @@ EcpriPacket::EcpriPacket(int RBs, vector<pair<int, int>> IQSamples)
 
 string EcpriPacket::getEcpriPacketAsString()
 {
-
     string packet = firstByte + message + convertToHex(payloadSize, 4) + pcRtc + convertToHex(seqId, 4) + oranPacket->getOranPacketAsString();
     return packet;
 }

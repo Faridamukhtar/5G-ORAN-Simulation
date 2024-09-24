@@ -39,18 +39,30 @@ void FileHandler::ReadFile(TransmissionConfig *TransmissionConfig)
     TransmissionConfig->initializeConfigData(data);
 }
 
+bool FileHandler::ReadFileLineByLine(string &line)
+{
+    if (!file.eof())
+    {
+        getline(file, line);
+        return true;
+    }
+
+    return false;
+}
+
 void FileHandler::ReadIQFile(vector<pair<int, int>> &IQSamples, int nLines)
 {
     IQSamples.clear();
 
     int i, q;
-    
-    for (int i = 0; i < nLines; i++)
+
+    for (int j = 0; j < nLines; j++)
     {
-        if (file.eof()) {
-            file.seekg(0, ios::beg);
+        if (file.eof())
+        {
+            file.clear();
+            file.seekg (0, ios::beg);
         }
-        
         file >> i >> q;
         IQSamples.emplace_back(i, q);
     }
@@ -63,6 +75,12 @@ void FileHandler::writeFile(string data, int chunkSize)
     {
         file << data.substr(i, chunkSize) << endl;
     }
+}
+
+void FileHandler::writeFileString(string data)
+{
+    file << data;
+    file.flush();
 }
 
 void FileHandler::closeFile()

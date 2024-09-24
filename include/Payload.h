@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-#define ORAN_HEADER_SIZE 16
+#define ORAN_HEADER_SIZE 8
 #define ECPRI_HEADER_SIZE 8
 #define ETHERNET_HEADER_SIZE 26
 
@@ -21,6 +21,7 @@ class OranPacket
 {
     string firstByte;
     int RBs;
+    static int prevRBs;
     static int frameId;
     static int subFrameId;
     static int slotId;

@@ -4,6 +4,7 @@
 #include "FileHandler.h"
 #include "TransmissionConfig.h"
 #include "TransmissionHandler.h"
+#include "ParseOutput.h"
 
 using namespace std;
 
@@ -33,6 +34,9 @@ int main(int argc, char *argv[])
         transmissionHandlerOran->printTransmissionParams();
         transmissionHandlerOran->transmitPackets(fileHandlerWrite);
         fileHandlerWrite->closeFile();
+
+        ParseOutput* parseOutput = new ParseOutput(OutputfileName);
+
     }
     else
     {
