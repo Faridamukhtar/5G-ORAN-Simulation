@@ -11,7 +11,7 @@ void TransmitBurst(string InputfileName, string OutputFileName);
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2)
+    if (argc < 3)
     {
         cerr << "insufficient number of arguments" << endl;
         return 1;

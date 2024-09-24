@@ -16,10 +16,13 @@ int main(int argc, char* argv[])
     ReceivingHandler* receivingHandler = new ReceivingHandler(OutputfileName);
     receivingHandler->listenToTCPTransmission();
 
-    ParseOutput *parseOutput = new ParseOutput(OutputfileName); 
-
+    if (argc == 2 || argv[3] == string("ORAN"))
+    {
+        ParseOutput *parseOutput = new ParseOutput(OutputfileName); 
+        delete parseOutput;
+    }
+    
     delete receivingHandler;
-    delete parseOutput;
 
     return 0;
 }
