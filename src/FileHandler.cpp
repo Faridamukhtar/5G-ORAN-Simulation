@@ -27,6 +27,27 @@ FileHandler::~FileHandler()
     closeFile();
 }
 
+bool FileHandler::ReadNextTCPChunk(string &chunk, int chunkSize)
+{
+    if (!file.is_open() || file.eof())
+    {
+        return false;
+    }
+
+    char buffer[chunkSize];
+
+    file.read(buffer, chunkSize);
+    streamsize bytes_read = file.gcount();
+
+    if (bytes_read > 0)
+    {
+        chunk.assign(buffer, bytes_read);
+        return true;
+    }
+
+    return false;
+}
+
 void FileHandler::ReadFile(TransmissionConfig *TransmissionConfig)
 {
     string line;
@@ -61,7 +82,7 @@ void FileHandler::ReadIQFile(vector<pair<int, int>> &IQSamples, int nLines)
         if (file.eof())
         {
             file.clear();
-            file.seekg (0, ios::beg);
+            file.seekg(0, ios::beg);
         }
         file >> i >> q;
         IQSamples.emplace_back(i, q);

@@ -25,6 +25,7 @@ class FileHandler
 public:
     FileHandler(string fileName, FILE_OPERATION operation);
     ~FileHandler();
+    bool ReadNextTCPChunk(string &chunk, int chunkSize = 1024);
     void ReadFile(TransmissionConfig *transmissionConfig);
     bool ReadFileLineByLine(string& line);
     void ReadIQFile(vector<pair<int, int>> &IQSamples, int nLines);

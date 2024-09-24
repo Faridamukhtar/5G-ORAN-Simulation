@@ -9,11 +9,13 @@ using namespace std;
 
 class TransmissionHandler
 {
+    int establishTCPConnection();
 public:
     virtual void calculateTransmissionParameters() = 0;
     virtual void setEthernetPacket() = 0;
-    virtual void transmitPackets(FileHandler *fileHandler) = 0;
+    virtual void generatePackets(FileHandler *fileHandler) = 0;
     virtual void printTransmissionParams() = 0;
+    void transmitPackets(FileHandler *generatedPacketsFIle);
 };
 class TransmissionHandlerBurst : public TransmissionHandler
 {
@@ -46,10 +48,10 @@ public:
     ~TransmissionHandlerBurst();
     void calculateTransmissionParameters();
     void setEthernetPacket();
-    void transmitPackets(FileHandler *fileHandler);
+    void generatePackets(FileHandler *fileHandler);
     void printTransmissionParams();
 };
-class TransmissionHandlerOran : TransmissionHandler
+class TransmissionHandlerOran : public TransmissionHandler
 {
     TransmissionConfigOran *transmissionConfigOran;
     EthernetPacketOran *ethernetPacket;
@@ -74,7 +76,7 @@ class TransmissionHandlerOran : TransmissionHandler
 public:
     TransmissionHandlerOran(TransmissionConfigOran *transmissionConfigOran);
     void calculateTransmissionParameters();
-    void transmitPackets(FileHandler *fileHandler);
+    void generatePackets(FileHandler *fileHandler);
     void printTransmissionParams();
     void setEthernetPacket();
 };

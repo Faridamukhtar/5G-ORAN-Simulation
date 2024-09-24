@@ -1,3 +1,6 @@
+#include <unistd.h>
+#include <arpa/inet.h>
+
 #include "TransmissionHandler.h"
 
 #define IFG_VAL "07"
@@ -111,7 +114,7 @@ void TransmissionHandlerBurst::setEthernetPacket()
     ethernetPacket = new EthernetPacket(maxPacketSize, destAddress, srcAddress);
 }
 
-void TransmissionHandlerBurst::transmitPackets(FileHandler *fileHandler)
+void TransmissionHandlerBurst::generatePackets(FileHandler *fileHandler)
 {
     for (int i = 0; i < totalNumberOfCompleteBursts; i++)
     {
@@ -247,7 +250,7 @@ void TransmissionHandlerOran::setEthernetPacket()
 {
 }
 
-void TransmissionHandlerOran::transmitPackets(FileHandler *fileHandler)
+void TransmissionHandlerOran::generatePackets(FileHandler *fileHandler)
 {
     vector<pair<int, int>> IQSamples;
 
@@ -319,4 +322,69 @@ void TransmissionHandlerOran::printTransmissionParams()
     cout << "Last Fragment in Last Packet per Symbol NRBs: " << lastFragmentInLastPacketPerSymbolNRBs << endl;
     cout << "No. of Symbols: " << noOfSymbols << endl;
     cout << endl;
+}
+
+int TransmissionHandler::establishTCPConnection() {
+
+    const char *server_ip = "127.0.0.1";
+    int server_port = 65432;
+
+    // Create a TCP socket
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+
+    if (sock < 0) {
+        cerr << "Error creating socket" << std::endl;
+        return -1;
+    }
+
+    // Define the server address structure
+    struct sockaddr_in server_address;
+    memset(&server_address, 0, sizeof(server_address));
+    server_address.sin_family = AF_INET;
+    server_address.sin_port = htons(server_port);
+    inet_pton(AF_INET, server_ip, &server_address.sin_addr);
+
+    // Connect to the server
+    if (connect(sock, (struct sockaddr*)&server_address, sizeof(server_address)) < 0) {
+        cerr << "Connection failed" << std::endl;
+        close(sock);
+        return -1;
+    }
+
+    return sock; // Return the socket descriptor if successful
+}
+
+void TransmissionHandler::transmitPackets(FileHandler *generatedPacketsFile)
+{
+    cout<<"ndjsjsjs";
+    int sock = establishTCPConnection();
+    if (sock < 0) {
+        cerr << "Could not establish connection to the server." << endl;
+        return;
+    }
+
+    string chunk;
+    size_t total_bytes_sent = 0;
+
+    // Loop to read and send chunks from the file
+    while (generatedPacketsFile->ReadNextTCPChunk(chunk)) {
+        size_t chunk_size = chunk.size();
+        size_t total_sent = 0;
+
+        while (total_sent < chunk_size) {
+            ssize_t bytes_sent = send(sock, chunk.c_str() + total_sent, chunk_size - total_sent, 0);
+            if (bytes_sent < 0) {
+                std::cerr << "Error sending chunk" << std::endl;
+                break;
+            }
+            total_sent += bytes_sent;
+        }
+
+        total_bytes_sent += total_sent;
+        cout << "Sent chunk of size: " << total_sent << " bytes." << endl;
+    }
+
+    cout << "Transmission complete. Total bytes sent: " << total_bytes_sent << " bytes." << endl;
+
+    close(sock);
 }
