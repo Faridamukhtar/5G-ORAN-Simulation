@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "nlohmannJson.hpp"
-#include "FileHandler.h"
+#include "FileHandlerRec.h"
 
 using namespace std;
 
@@ -47,7 +47,7 @@ struct ParsedPacket {
 
 class ParseOutput
 {
-    FileHandler* fileHandlerWrite;
+    FileHandlerRec* fileHandlerWrite;
 public:
     ParseOutput(string outputFilename);
     ~ParseOutput();

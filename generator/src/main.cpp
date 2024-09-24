@@ -1,10 +1,7 @@
 #include <string>
 #include <iostream>
 
-#include "FileHandler.h"
-#include "TransmissionConfig.h"
 #include "TransmissionHandler.h"
-#include "ParseOutput.h"
 
 using namespace std;
 
@@ -50,9 +47,6 @@ void TransmitOran(string InputfileName, string OutputfileName)
 
     FileHandler *generatedPacketsFileForRead = new FileHandler("tempGen.txt", READ_FILE);
     transmissionHandlerOran->transmitPackets(generatedPacketsFileForRead);
-
-    ParseOutput *parseOutput = new ParseOutput(OutputfileName); //TODO: To be moved to other process when TCP is finalized
-
 
     delete transmissionConfigOran;
     delete transmissionHandlerOran;

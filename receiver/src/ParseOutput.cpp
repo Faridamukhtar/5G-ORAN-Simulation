@@ -44,7 +44,7 @@ int hexToInt(string hexNum)
 
 ParseOutput::ParseOutput(string outputFilename)
 {
-    fileHandlerWrite = new FileHandler("parsedPackets.json", WRITE_FILE);
+    fileHandlerWrite = new FileHandlerRec("ParsedPackets.json", WRITE_FILE);
     parseOutput(outputFilename);
 }
 
@@ -55,7 +55,7 @@ ParseOutput::~ParseOutput()
 
 void ParseOutput::parseOutput(string outputFilename)
 {
-    FileHandler *fileHandler = new FileHandler(outputFilename, READ_FILE);
+    FileHandlerRec *fileHandler = new FileHandlerRec(outputFilename, READ_FILE);
     json jsonArray = json::array();
 
     string line;

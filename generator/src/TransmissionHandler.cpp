@@ -356,7 +356,6 @@ int TransmissionHandler::establishTCPConnection() {
 
 void TransmissionHandler::transmitPackets(FileHandler *generatedPacketsFile)
 {
-    cout<<"ndjsjsjs";
     int sock = establishTCPConnection();
     if (sock < 0) {
         cerr << "Could not establish connection to the server." << endl;
