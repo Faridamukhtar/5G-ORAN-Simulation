@@ -152,5 +152,5 @@ int EcpriPacket::seqId = -1;
 
 void EcpriPacket::incrementSeqId()
 {
-    seqId = (seqId + 1) % 255;
+    seqId = (seqId + 1) % 256;
 }
