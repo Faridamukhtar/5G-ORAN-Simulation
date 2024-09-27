@@ -172,7 +172,7 @@ void TransmissionHandlerOran::calculateFrameStructureData()
 
     int noOfSlotsPerSubFrame = 1 / ((double)15.0 / transmissionConfigOran->scs);
 
-    noOfSymbols = 14 * noOfSlotsPerSubFrame * 10 * frameRate * transmissionConfigOran->captureSizeInMs * pow(10, -3);
+    noOfSymbols = 12 * noOfSlotsPerSubFrame * 10 * frameRate * transmissionConfigOran->captureSizeInMs * pow(10, -3);
 
     OranPacket::setSlotsPerSubFrame(noOfSlotsPerSubFrame);
 }
