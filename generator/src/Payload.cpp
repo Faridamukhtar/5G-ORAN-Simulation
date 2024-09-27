@@ -82,7 +82,7 @@ void OranPacket::incrementPacket()
     {
         currentPacketsPerSymbol = 0;
         symbolId++;
-        if (symbolId >= 14)
+        if (symbolId >= 12)
         {
             symbolId = 0;
             slotId++;
