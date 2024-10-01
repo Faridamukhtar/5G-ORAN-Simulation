@@ -2,13 +2,14 @@
 
 ## Project Description
 
-This project simulates the transfer of Ethernet packets over a network, incorporating key aspects such as packet size, Inter-Frame Gaps (IFGs), and CRC calculations. The simulation helps understand how Ethernet packets are structured and transmitted and visualizes the impact of different parameters on packet transfer.
+This project simulates the transfer of Ethernet packets over a network, incorporating key aspects such as ORAN Header Structure, Inter-Frame Gaps (IFGs), and CRC calculations. The simulation helps understand how ORAN packets are structured and transmitted and visualizes the impact of different parameters on packet transfer.
 
 ## Features
 
 - Simulate Ethernet packet transfer with customizable parameters.
 - Calculate and validate CRC-32 checksums for packet integrity.
-- Analyze the impact of packet size, IFGs, and other parameters on transfer performance.
+- Simulates Data Transmission from generator to receiver over TCP sockets
+- Parses received packets to json at receiver end for easier packet manipulation
 
 ## Prerequisites
 
